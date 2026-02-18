@@ -1,0 +1,26 @@
+
+services:
+  db:
+    image: postgres # Use a lightweight PostgreSQL image
+    restart: always
+    environment:
+      POSTGRES_DB: chatbot # Change this to your desired database name
+      POSTGRES_USER: admin # Change this to your desired database user
+      POSTGRES_PASSWORD: admin # Change this to a strong password
+    ports:
+      - "5432:5432" # Map container port 5432 to host port 5432
+    volumes:
+      - db_data:/var/lib/postgresql/data # Persist data in a named volume
+
+  fastapi_app:
+    build: . # Build the Docker image from the current directory (where your main.py is)
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db # Ensure the database starts before the FastAPI app
+    environment:
+      GEMINI_API_KEY: "Your Gemini API Key"
+      DATABASE_URL: postgresql://admin:admin@db:5432/chatbot # Connection string for FastAPI
+
+volumes:
+  db_data:
