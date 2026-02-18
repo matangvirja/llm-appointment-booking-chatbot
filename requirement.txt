@@ -1,0 +1,6 @@
+fastapi
+uvicorn[standard]
+pydantic
+python-dotenv
+psycopg2-binary # PostgreSQL adapter
+SQLAlchemy # ORM for interacting with the database
