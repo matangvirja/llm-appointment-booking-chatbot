@@ -1,72 +1,57 @@
-# 🤖 LLM-Based AI Appointment Booking Chatbot
+# 🤖 LLM Appointment Booking Chatbot
 
-An intelligent appointment booking system powered by **Google Gemini (LLM)** with tool-calling capabilities, integrated with a **FastAPI backend**, **PostgreSQL database**, and fully containerized using **Docker**.
+An AI-powered appointment booking chatbot built using:
 
-This project demonstrates real-world LLM integration with backend APIs and structured business logic validation.
+* 🧠 Google Gemini (LLM with tool calling)
+* ⚡ FastAPI backend
+* 🐘 PostgreSQL database
+* 🐳 Docker & Docker Compose
 
----
-
-## 🚀 Features
-
-* 🧠 Natural language appointment booking
-* 🔧 Gemini Tool Calling (Function Calling)
-* ⚡ FastAPI REST backend
-* 🐘 PostgreSQL database with SQLAlchemy ORM
-* 🕒 Business hours validation (9 AM – 7 PM)
-* 📅 Appointment allowed only for Today + Next 2 Days
-* ⛔ Unique time slot enforcement
-* ✅ Appointment approval / rejection system
-* 🐳 Dockerized setup
+This project demonstrates how an LLM can interact with a backend API to create real-world appointments with proper business validation.
 
 ---
 
-## 🏗 System Architecture
+# 🚀 Features
 
-```
-User
-  ↓
-Gemini LLM (Tool Calling)
-  ↓
-FastAPI Backend
-  ↓
-PostgreSQL Database
-  ↑
-Tool Response → Gemini → User
-```
+* Natural language appointment booking
+* Gemini function/tool calling
+* Business hours validation (9 AM – 7 PM)
+* Only today + next 2 days allowed
+* Unique appointment time enforcement
+* Approve / Reject appointment endpoints
+* Fully Dockerized setup
 
 ---
 
-## 🛠 Tech Stack
+# 🛠 Tech Stack
 
-* **LLM**: Google Gemini 2.5 Flash
-* **Backend**: FastAPI
-* **Database**: PostgreSQL
-* **ORM**: SQLAlchemy
-* **Containerization**: Docker & Docker Compose
-* **Environment Management**: python-dotenv
-* **Language**: Python 3.10+
+* Python 3.10+
+* FastAPI
+* PostgreSQL
+* SQLAlchemy
+* Docker
+* Google Gemini API
 
 ---
 
-## 📂 Project Structure
+# 📂 Project Structure
 
 ```
 .
 ├── main.py              # FastAPI backend
-├── gemini.py            # LLM + Tool calling logic
-├── docker-compose.yml   # Docker orchestration
-├── Dockerfile           # Container setup
-├── requirements.txt     # Dependencies
-├── .env.example         # Example environment variables
-├── .gitignore
+├── gemini.py            # LLM chatbot logic
+├── docker-compose.yml   # Docker services
+├── Dockerfile
+├── requirements.txt
+├── .env.example
 └── README.md
 ```
 
 ---
 
-## ⚙️ Setup Instructions
+# ⚙️ Setup Instructions (Step-by-Step)
 
-### 1️⃣ Clone Repository
+## ✅ Step 1 — Clone the Repository
 
 ```bash
 git clone https://github.com/YOUR_USERNAME/llm-appointment-booking-chatbot.git
@@ -75,121 +60,145 @@ cd llm-appointment-booking-chatbot
 
 ---
 
-### 2️⃣ Create `.env` File
+## ✅ Step 2 — Install Docker
 
-Create a file named `.env`:
+Make sure Docker is installed:
+
+```bash
+docker --version
+docker-compose --version
+```
+
+If not installed, download Docker Desktop from:
+[https://www.docker.com/](https://www.docker.com/)
+
+---
+
+## ✅ Step 3 — Create Environment File
+
+Create a file named:
+
+```
+.env
+```
+
+Add:
 
 ```
 GEMINI_API_KEY=your_gemini_api_key_here
 DATABASE_URL=postgresql://postgres:password@db:5432/appointments
 ```
 
-⚠️ Never commit your real API key.
+⚠️ Do not push this file to GitHub.
 
 ---
 
-### 3️⃣ Run with Docker
+## ✅ Step 4 — Start PostgreSQL + FastAPI Using Docker
+
+Run:
 
 ```bash
 docker-compose up --build
 ```
 
-This will:
+This will automatically:
 
-* Start PostgreSQL
-* Start FastAPI backend
-* Create database tables automatically
-
----
-
-### 4️⃣ Run the Chatbot
-
-In a new terminal:
-
-```bash
-python gemini.py
-```
-
-You can now book appointments using natural language like:
-
-```
-Book an appointment for John tomorrow at 10 AM
-```
+* Start PostgreSQL database
+* Create the `appointments` database
+* Start FastAPI server
+* Create required tables
 
 ---
 
-## 📌 API Endpoints
+## ✅ Step 5 — Verify Backend
 
-| Method | Endpoint       | Description                |
-| ------ | -------------- | -------------------------- |
-| GET    | `/view`        | View all appointments      |
-| GET    | `/detail/{id}` | Get appointment by ID      |
-| POST   | `/create`      | Create appointment         |
-| PUT    | `/accept/{id}` | Approve appointment        |
-| PUT    | `/reject/{id}` | Reject appointment         |
-| GET    | `/pending`     | View pending appointments  |
-| GET    | `/approved`    | View approved appointments |
-| GET    | `/rejected`    | View rejected appointments |
-
-Swagger Docs available at:
+Open your browser:
 
 ```
 http://localhost:8000/docs
 ```
 
----
+You should see FastAPI Swagger UI.
 
-## 🔒 Business Rules Implemented
-
-* Appointment must be:
-
-  * Between 9:00 AM and 7:00 PM
-  * On the hour (e.g., 10:00, 11:00)
-  * Today or within next 2 days
-* Appointment time must be unique
-* Appointment ID must be unique
+This means PostgreSQL and backend are connected successfully.
 
 ---
 
-## 🧪 Example Flow
+## ✅ Step 6 — Run the Chatbot
 
-1. User: "Book appointment for John tomorrow at 10 AM"
-2. Gemini extracts structured parameters
-3. Gemini calls backend function
-4. FastAPI validates & stores data
-5. Gemini responds with confirmation
+Open a new terminal:
+
+```bash
+python gemini.py
+```
+
+You can now type:
+
+```
+Book appointment for John tomorrow at 10 AM
+```
+
+The chatbot will:
+
+1. Extract structured data
+2. Call backend API
+3. Store data in PostgreSQL
+4. Return confirmation
 
 ---
 
-## 🎯 Learning Outcomes
+# 📌 Available API Endpoints
+
+| Method | Endpoint       | Description           |
+| ------ | -------------- | --------------------- |
+| GET    | `/view`        | View all appointments |
+| GET    | `/detail/{id}` | Get appointment by ID |
+| POST   | `/create`      | Create appointment    |
+| PUT    | `/accept/{id}` | Approve appointment   |
+| PUT    | `/reject/{id}` | Reject appointment    |
+
+---
+
+# 🐘 How PostgreSQL Is Setup
+
+PostgreSQL runs inside Docker.
+
+When you run:
+
+```bash
+docker-compose up
+```
+
+Docker:
+
+* Pulls PostgreSQL image
+* Creates database
+* Connects FastAPI using `DATABASE_URL`
+* Automatically creates tables on startup
+
+No manual database setup required.
+
+---
+
+# 🔒 Business Rules Implemented
+
+* Appointment must be between 9 AM – 7 PM
+* Appointment must be on the hour (10:00, 11:00, etc.)
+* Appointment allowed only today + next 2 days
+* No duplicate time slots
+* No duplicate IDs
+
+---
+
+# 🎯 Learning Outcomes
 
 This project demonstrates:
 
 * LLM tool calling integration
-* Backend API design
-* SQLAlchemy ORM usage
+* Backend API development
+* Database modeling with SQLAlchemy
 * Docker-based deployment
-* Environment variable security
-* Real-world business rule validation
+* Secure environment variable management
 
----
-
-## 🚀 Future Improvements
-
-* 🌐 Web UI (React / Next.js)
-* 🔐 JWT Authentication
-* 📊 Admin Dashboard
-* 🤖 Auto slot suggestion
-* ☁️ Deployment on AWS / GCP
-* 🧪 Unit & Integration Tests
-* 🔄 CI/CD Pipeline
-
----
-
-## 👨‍💻 Author
-
-Matang Virja 
-AI Engineering Student
-
----
-    
+* Help you deploy this project live
+* Review your entire repo before publishing 🚀
